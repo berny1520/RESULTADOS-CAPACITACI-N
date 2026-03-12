@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASEFORTMEC - Dashboard Ejecutivo PRO</title>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<style>
+:root{--bg:#eef3f8;--panel:#ffffff;--text:#0f172a;--muted:#64748b;--line:#dbe4ee;--brand:#0f4c81;--accent:#1d75d1;--good:#137333;--warn:#b26b00;--bad:#b42318;--shadow:0 14px 34px rgba(15,23,42,.08);--radius:20px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(circle at top left, rgba(29,117,209,.10), transparent 22%),linear-gradient(180deg,#f4f8fb 0%, #eef3f8 100%)}
+.wrap{max-width:1480px;margin:0 auto;padding:28px}.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+.brand{display:flex;gap:16px;align-items:flex-start}.brand-badge{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--brand),var(--accent));box-shadow:var(--shadow);position:relative;flex:0 0 auto}
+.brand-badge:before,.brand-badge:after{content:"";position:absolute;background:rgba(255,255,255,.92);border-radius:3px}.brand-badge:before{left:14px;top:14px;width:10px;height:30px}.brand-badge:after{left:30px;top:14px;width:14px;height:30px}
+h1{margin:0;font-size:30px;letter-spacing:.4px}.subtitle{margin:6px 0 0 0;color:var(--muted);font-size:16px}.subsubtitle{margin:4px 0 0 0;color:var(--muted);font-size:13px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,.btn{border:none;border-radius:14px;padding:12px 16px;cursor:pointer;font-size:14px;font-weight:600;box-shadow:var(--shadow);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.primary{background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff}.secondary{background:#fff;color:var(--text)}
+.status,.debug,.hero,.filter,.card,.panel{background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid rgba(219,228,238,.9);border-radius:var(--radius);box-shadow:var(--shadow)}
+.status,.debug{padding:12px 16px;margin-bottom:14px;color:var(--muted)}.status{border-left:6px solid var(--brand)}.debug{border-left:6px solid #94a3b8}
+.hero{padding:20px 22px;margin-bottom:18px;background:linear-gradient(135deg, rgba(15,76,129,.96), rgba(29,117,209,.92));color:#fff;border:none}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}.hero h2{margin:0 0 10px 0;font-size:26px}.hero p{margin:0;color:rgba(255,255,255,.9);line-height:1.5}
+.hero .snapshot{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:14px 16px}.hero .snapshot h3{margin:0 0 8px 0;font-size:14px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.hero .snapshot ul{margin:0;padding-left:18px}.hero .snapshot li{margin:6px 0;color:rgba(255,255,255,.92)}
+.panel{padding:18px;margin-bottom:18px}.panel h3{margin:0 0 8px 0}.panel p{margin:0;color:var(--muted)}
+textarea{width:100%;min-height:160px;padding:14px;border:1px solid var(--line);border-radius:14px;font-family:Consolas,monospace;font-size:13px;margin-top:12px;background:#fbfdff}
+input[type=file]{display:none}
+.filters{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:14px;margin-bottom:18px}.filter{padding:14px}.filter label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}
+.filter select{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:16px;margin-bottom:18px}.card{padding:18px;position:relative;overflow:hidden}
+.card:after{content:"";position:absolute;right:-16px;top:-16px;width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg, rgba(29,117,209,.10), rgba(15,76,129,.02))}
+.kpi .label{color:var(--muted);font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.35px}.kpi .value{font-size:44px;font-weight:800;line-height:1;margin-bottom:8px}.kpi .sub{font-size:13px;color:var(--muted)}
+.grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-bottom:18px}.grid-1{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:18px}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px}
+.chart-title{margin:0 0 6px 0;font-size:20px}.chart-sub{color:var(--muted);font-size:13px;margin-bottom:8px}.chart-box{width:100%;min-height:360px}.chart-box.tall{min-height:460px}
+.metric-list{display:grid;gap:12px}.metric-item{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:12px 14px;border:1px solid var(--line);background:#fbfdff;border-radius:14px}.metric-item strong{font-size:15px}.metric-item span{color:var(--muted);font-size:13px}
+.chip{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}.good{background:#e9f8ef;color:var(--good)}.warn{background:#fff3df;color:var(--warn)}.bad{background:#fdecec;color:var(--bad)}
+.table-wrap{overflow:auto;max-height:520px;border:1px solid var(--line);border-radius:16px;background:#fff}table{width:100%;border-collapse:collapse;background:#fff}thead th{position:sticky;top:0;background:#f8fbfe;z-index:1}
+th,td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;white-space:nowrap}.small-note,.footer-note{font-size:12px;color:var(--muted);margin-top:8px}
+.exec-box{background:linear-gradient(180deg,#fbfdff 0%, #f4f9ff 100%);border:1px solid var(--line);border-radius:18px;padding:18px}.exec-box p{margin:0;line-height:1.65;color:#334155}
+.section-title{margin:0 0 10px 0;font-size:18px}.legend-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+@media (max-width:1180px){.hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}}
+@media (max-width:860px){.filters,.kpis{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.filters,.kpis{grid-template-columns:1fr}h1{font-size:24px}.kpi .value{font-size:36px}}
+@media print{body{background:#fff}.actions,.panel,.filters,.debug{display:none!important}.wrap{max-width:none;padding:0}.status,.hero,.card,.filter{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+<div class="brand"><div class="brand-badge"></div><div><h1>ASEFORTMEC</h1><p class="subtitle">Dashboard ejecutivo de evaluaciones</p><p class="subsubtitle">Inteligencia de capacitación · reporte gerencial · análisis de brechas</p></div></div>
+<div class="actions">
+<label class="btn secondary" for="csvFile">Elegir CSV</label>
+<input id="csvFile" type="file" accept=".csv,text/csv">
+<button class="secondary" onclick="cargarEjemplo()">Probar con ejemplo</button>
+<button class="secondary" onclick="procesarTextarea()">Procesar texto pegado</button>
+<button class="primary" onclick="window.print()">Generar informe PDF</button>
+</div></div>
+
+<div id="status" class="status">Carga un CSV exportado desde Google Sheets o usa el ejemplo para una vista inmediata.</div>
+<div id="debug" class="debug">Diagnóstico: esperando acción.</div>
+
+<div class="hero">
+<div class="hero-grid">
+<div><h2>Visión gerencial del desempeño</h2><p id="heroText">Este panel consolida cumplimiento, aprobación, focos de riesgo y desempeño por cargo para facilitar decisiones de capacitación y seguimiento operativo.</p></div>
+<div class="snapshot"><h3>Lectura rápida</h3><ul id="heroBullets"><li>Sin datos cargados.</li></ul></div>
+</div></div>
+
+<div class="panel">
+<h3>Ingreso de datos</h3>
+<p>Si el botón para elegir archivo no responde en tu equipo, pega aquí el contenido completo del CSV y luego presiona <b>Procesar texto pegado</b>.</p>
+<textarea id="csvText" placeholder="Pega aquí el contenido del CSV..."></textarea>
+</div>
+
+<div class="filters">
+<div class="filter"><label for="fContrato">Contrato</label><select id="fContrato"></select></div>
+<div class="filter"><label for="fCargo">Cargo</label><select id="fCargo"></select></div>
+<div class="filter"><label for="fResultado">Resultado</label><select id="fResultado"><option value="Todos">Todos</option><option value="Aprobado">Aprobado</option><option value="Reprobado">Reprobado</option></select></div>
+<div class="filter"><label for="fMes">Período</label><select id="fMes"></select></div>
+</div>
+
+<div class="kpis">
+<div class="card kpi"><div class="label">Total evaluaciones</div><div class="value" id="kpiTotal">0</div><div class="sub">Registros filtrados</div></div>
+<div class="card kpi"><div class="label">Promedio general</div><div class="value" id="kpiPromedio">0%</div><div class="sub">Cumplimiento promedio</div></div>
+<div class="card kpi"><div class="label">Aprobación</div><div class="value" id="kpiAprob">0%</div><div class="sub">Corte de aprobación: 80%</div></div>
+<div class="card kpi"><div class="label">Brecha principal</div><div class="value" id="kpiBrecha">-</div><div class="sub" id="kpiBrechaSub">Pregunta con menor acierto</div></div>
+</div>
+
+<div class="grid-3">
+<div class="card"><h3 class="section-title">Resumen ejecutivo</h3><div class="exec-box"><p id="execSummary">Carga datos para generar un resumen ejecutivo automático.</p></div></div>
+<div class="card"><h3 class="section-title">Hallazgos clave</h3><div class="metric-list" id="hallazgos"><div class="metric-item"><div><strong>Esperando datos</strong><br><span>Se mostrarán los principales hallazgos.</span></div><span class="chip warn">Pendiente</span></div></div></div>
+<div class="card"><h3 class="section-title">Top y brechas</h3><div class="metric-list" id="rankingBox"><div class="metric-item"><div><strong>Esperando datos</strong><br><span>Aquí verás mejor resultado y foco de mejora.</span></div><span class="chip warn">Pendiente</span></div></div></div>
+</div>
+
+<div class="grid-2">
+<div class="card"><h3 class="chart-title">Distribución de resultados</h3><div class="chart-sub">Concentración de evaluaciones por rango de cumplimiento.</div><div id="chartDistribucion" class="chart-box"></div><div class="legend-row"><span class="chip good">90-100% Sobresaliente</span><span class="chip warn">80-89% Aprobado</span><span class="chip bad">&lt;80% Riesgo</span></div></div>
+<div class="card"><h3 class="chart-title">Promedio por cargo</h3><div class="chart-sub">Comparación del porcentaje promedio según rol.</div><div id="chartCargo" class="chart-box"></div></div>
+</div>
+
+<div class="grid-2">
+<div class="card"><h3 class="chart-title">Cumplimiento por pregunta</h3><div class="chart-sub">Identificación de contenidos críticos y oportunidades de reforzamiento.</div><div id="chartPreguntas" class="chart-box tall"></div><div class="small-note">Clave usada: 1-B, 2-B, 3-C, 4-B, 5-C, 6-B, 7-C, 8-B, 9-B, 10-C, 11-C, 12-C, 13-B, 14-B, 15-C.</div></div>
+<div class="card"><h3 class="chart-title">Semáforo de preguntas</h3><div class="chart-sub">Clasificación rápida según nivel de acierto.</div><div class="metric-list" id="preguntaSemaforo"><div class="metric-item"><div><strong>Sin datos</strong><br><span>Se generará al cargar información.</span></div><span class="chip warn">Pendiente</span></div></div></div>
+</div>
+
+<div class="grid-1">
+<div class="card"><h3 class="chart-title">Detalle de evaluaciones</h3><div class="chart-sub">Vista operativa para seguimiento individual.</div><div class="table-wrap"><table id="tablaDetalle"><thead><tr><th>Fecha</th><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Contrato</th><th>Puntaje</th><th>Porcentaje</th><th>Estado</th></tr></thead><tbody></tbody></table></div><div class="footer-note">Versión PRO para presentación gerencial y seguimiento de capacitaciones.</div></div>
+</div>
+</div>
+
+<script>
+google.charts.load('current', {packages:['corechart','bar']});
+const CLAVE=['B','B','C','B','C','B','C','B','B','C','C','C','B','B','C'];
+let registros=[], registrosFiltrados=[], chartsReady=false;
+function setStatus(msg,err=false){const el=document.getElementById('status');el.textContent=msg;el.style.borderLeftColor=err?'#b42318':'#0f4c81'}
+function setDebug(msg){document.getElementById('debug').textContent='Diagnóstico: '+msg}
+function normalizarTexto(v){return (v??'').toString().trim()}
+function limpiarHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function parsePorcentaje(valor){const t=normalizarTexto(valor).replace('%','').replace(',','.');const n=parseFloat(t);return isNaN(n)?0:n}
+function parseFecha(valor){const txt=normalizarTexto(valor);if(!txt)return null;const parts=txt.split(' '),dmy=(parts[0]||'').split('/'),hms=(parts[1]||'00:00:00').split(':');if(dmy.length===3){const d=+dmy[0],m=+dmy[1]-1,y=+dmy[2],hh=+(hms[0]||0),mm=+(hms[1]||0),ss=+(hms[2]||0);const dt=new Date(y,m,d,hh,mm,ss);return isNaN(dt.getTime())?null:dt}const fb=new Date(txt);return isNaN(fb.getTime())?null:fb}
+function formatFecha(date){if(!date)return'';return `${String(date.getDate()).padStart(2,'0')}-${String(date.getMonth()+1).padStart(2,'0')}-${date.getFullYear()}`}
+function estadoPorcentaje(p){return p>=80?'Aprobado':'Reprobado'}
+function chipEstado(p){const e=estadoPorcentaje(p);if(p>=90)return `<span class="chip good">${e}</span>`;if(p>=80)return `<span class="chip warn">${e}</span>`;return `<span class="chip bad">${e}</span>`}
+function chipByScore(p){if(p>=90)return 'good'; if(p>=80)return 'warn'; return 'bad';}
+function extraerAlternativa(txt){const m=normalizarTexto(txt).match(/^([A-D])\)/i);return m?m[1].toUpperCase():''}
+function parseDelimited(text, sep){const rows=[]; let row=[], field='', i=0, inQuotes=false; if(text.charCodeAt(0)===0xFEFF) text=text.slice(1); while(i<text.length){const c=text[i]; if(inQuotes){ if(c=='"'){ if(text[i+1]=='"'){field+='"'; i+=2; continue;} inQuotes=false; i++; continue;} field+=c; i++; continue;} else { if(c=='"'){inQuotes=true; i++; continue;} if(c===sep){row.push(field); field=''; i++; continue;} if(c=='\n'){row.push(field); rows.push(row); row=[]; field=''; i++; continue;} if(c=='\r'){i++; continue;} field+=c; i++; continue; } } row.push(field); rows.push(row); return rows.filter(r=>r.some(cell=>normalizarTexto(cell)!==''));}
+function parseAnyCSV(text){const comma=parseDelimited(text, ','); const semi=parseDelimited(text, ';'); return (semi[0] && semi[0].length > comma[0].length) ? semi : comma;}
+function mapHeaders(headers){const map={}; headers.forEach((h,idx)=>map[normalizarTexto(h)]=idx); return map;}
+function convertirCSV(text){const rows=parseAnyCSV(text); if(rows.length<2) throw new Error('El archivo no tiene filas de datos.'); const headers=rows[0].map(h=>normalizarTexto(h)); const idx=mapHeaders(headers); const required=['Marca temporal','Puntuación','Porcentaje','NOMBRE Y APELLIDOS','RUT','CARGO','CONTRATO']; const faltantes=required.filter(k=>idx[k]===undefined); if(faltantes.length) throw new Error('Faltan columnas: '+faltantes.join(', ')); const preguntas=headers.filter(h=>/^\d+\./.test(h)); if(preguntas.length<15) throw new Error('No se encontraron 15 preguntas. Encabezados detectados: '+headers.slice(0,12).join(' | ')); const data = rows.slice(1).map(r=>{const fechaObj=parseFecha(r[idx['Marca temporal']]); return {fechaObj,puntaje:normalizarTexto(r[idx['Puntuación']]),porcentaje:parsePorcentaje(r[idx['Porcentaje']]),nombre:normalizarTexto(r[idx['NOMBRE Y APELLIDOS']]),rut:normalizarTexto(r[idx['RUT']]),cargo:normalizarTexto(r[idx['CARGO']]),contrato:normalizarTexto(r[idx['CONTRATO']]),respuestas:preguntas.slice(0,15).map(p=>normalizarTexto(r[idx[p]])),periodo:fechaObj?`${fechaObj.getFullYear()}-${String(fechaObj.getMonth()+1).padStart(2,'0')}`:'Sin período'}}).filter(x=>x.nombre||x.rut||x.cargo||x.contrato); setDebug(`Separador detectado correctamente. Columnas: ${headers.length}. Registros útiles: ${data.length}.`); return data;}
+function poblarSelect(id,valores,etiqueta='Todos'){const sel=document.getElementById(id);sel.innerHTML='';const base=document.createElement('option');base.value=etiqueta;base.textContent=etiqueta;sel.appendChild(base);valores.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)});}
+function prepararFiltros(){poblarSelect('fContrato',[...new Set(registros.map(r=>r.contrato).filter(Boolean))].sort((a,b)=>a.localeCompare(b))); poblarSelect('fCargo',[...new Set(registros.map(r=>r.cargo).filter(Boolean))].sort((a,b)=>a.localeCompare(b))); poblarSelect('fMes',[...new Set(registros.map(r=>r.periodo).filter(Boolean))].sort((a,b)=>b.localeCompare(a)));}
+function aplicarFiltros(){const contrato=document.getElementById('fContrato').value,cargo=document.getElementById('fCargo').value,resultado=document.getElementById('fResultado').value,mes=document.getElementById('fMes').value; registrosFiltrados=registros.filter(r=>{if(contrato!=='Todos'&&r.contrato!==contrato)return false; if(cargo!=='Todos'&&r.cargo!==cargo)return false; if(resultado!=='Todos'&&estadoPorcentaje(r.porcentaje)!==resultado)return false; if(mes!=='Todos'&&r.periodo!==mes)return false; return true}); render();}
+function calcularMetricas(lista){const total=lista.length,promedio=total?lista.reduce((a,b)=>a+b.porcentaje,0)/total:0,aprob=total?lista.filter(r=>r.porcentaje>=80).length/total*100:0; const rangos={'90-100':0,'80-89':0,'70-79':0,'<70':0}; lista.forEach(r=>{if(r.porcentaje>=90)rangos['90-100']++;else if(r.porcentaje>=80)rangos['80-89']++;else if(r.porcentaje>=70)rangos['70-79']++;else rangos['<70']++}); const cargosMap={}; lista.forEach(r=>{if(!cargosMap[r.cargo])cargosMap[r.cargo]=[]; cargosMap[r.cargo].push(r.porcentaje)}); const cargoPromedios=Object.entries(cargosMap).map(([cargo,arr])=>({cargo,promedio:arr.reduce((a,b)=>a+b,0)/arr.length})).sort((a,b)=>b.promedio-a.promedio); const preguntas=CLAVE.map((clave,i)=>{let totalResp=0,correctas=0; lista.forEach(r=>{const alt=extraerAlternativa(r.respuestas[i]||''); if(alt){totalResp++; if(alt===clave)correctas++}}); return {pregunta:`P${i+1}`,porcentaje:totalResp?correctas/totalResp*100:0}}); const peorPregunta=preguntas.slice().sort((a,b)=>a.porcentaje-b.porcentaje)[0]||{pregunta:'-',porcentaje:0}; const mejorPregunta=preguntas.slice().sort((a,b)=>b.porcentaje-a.porcentaje)[0]||{pregunta:'-',porcentaje:0}; const topPersona=lista.slice().sort((a,b)=>b.porcentaje-a.porcentaje)[0]||null; const lowPersona=lista.slice().sort((a,b)=>a.porcentaje-b.porcentaje)[0]||null; return{total,promedio,aprob,rangos,cargoPromedios,preguntas,peorPregunta,mejorPregunta,topPersona,lowPersona};}
+function renderKPIs(m){document.getElementById('kpiTotal').textContent=m.total; document.getElementById('kpiPromedio').textContent=`${m.promedio.toFixed(1)}%`; document.getElementById('kpiAprob').textContent=`${m.aprob.toFixed(1)}%`; document.getElementById('kpiBrecha').textContent=m.peorPregunta.pregunta; document.getElementById('kpiBrechaSub').textContent=`${m.peorPregunta.porcentaje.toFixed(1)}% de acierto`;}
+function renderHero(m){const heroText=document.getElementById('heroText'); const heroBullets=document.getElementById('heroBullets'); if(!m.total){heroText.textContent='Este panel consolida cumplimiento, aprobación, focos de riesgo y desempeño por cargo para facilitar decisiones de capacitación y seguimiento operativo.'; heroBullets.innerHTML='<li>Sin datos cargados.</li>'; return;} heroText.textContent=`Se analizaron ${m.total} evaluación${m.total===1?'':'es'} con un promedio general de ${m.promedio.toFixed(1)}%. El panel identifica brechas de conocimiento, desempeño por cargo y focos prioritarios para reforzamiento.`; heroBullets.innerHTML=`<li>Aprobación global: <b>${m.aprob.toFixed(1)}%</b>.</li><li>Brecha principal: <b>${m.peorPregunta.pregunta}</b> con <b>${m.peorPregunta.porcentaje.toFixed(1)}%</b> de acierto.</li><li>Mayor fortaleza: <b>${m.mejorPregunta.pregunta}</b> con <b>${m.mejorPregunta.porcentaje.toFixed(1)}%</b>.</li>`;}
+function renderSummary(m){const el=document.getElementById('execSummary'); if(!m.total){el.textContent='Carga datos para generar un resumen ejecutivo automático.'; return;} const mejorCargo=m.cargoPromedios[0]?`${m.cargoPromedios[0].cargo} (${m.cargoPromedios[0].promedio.toFixed(1)}%)`:'Sin información por cargo'; el.textContent=`Durante el período analizado se registraron ${m.total} evaluaciones, con un promedio de cumplimiento de ${m.promedio.toFixed(1)}% y una tasa de aprobación de ${m.aprob.toFixed(1)}%. La principal oportunidad de mejora se concentra en ${m.peorPregunta.pregunta}, que presenta ${m.peorPregunta.porcentaje.toFixed(1)}% de acierto. El mejor desempeño por rol corresponde a ${mejorCargo}.`;}
+function renderHallazgos(m){const box=document.getElementById('hallazgos'); if(!m.total){box.innerHTML='<div class="metric-item"><div><strong>Esperando datos</strong><br><span>Se mostrarán los principales hallazgos.</span></div><span class="chip warn">Pendiente</span></div>'; return;} const aprobChip=m.aprob>=90?'good':(m.aprob>=80?'warn':'bad'); const promedioChip=m.promedio>=90?'good':(m.promedio>=80?'warn':'bad'); box.innerHTML=`<div class="metric-item"><div><strong>Promedio general</strong><br><span>Resultado consolidado del grupo evaluado.</span></div><span class="chip ${promedioChip}">${m.promedio.toFixed(1)}%</span></div><div class="metric-item"><div><strong>Aprobación global</strong><br><span>Participantes sobre el umbral de 80%.</span></div><span class="chip ${aprobChip}">${m.aprob.toFixed(1)}%</span></div><div class="metric-item"><div><strong>Pregunta crítica</strong><br><span>Contenido prioritario para reforzar.</span></div><span class="chip bad">${m.peorPregunta.pregunta}</span></div>`;}
+function renderRanking(m){const box=document.getElementById('rankingBox'); if(!m.total){box.innerHTML='<div class="metric-item"><div><strong>Esperando datos</strong><br><span>Aquí verás mejor resultado y foco de mejora.</span></div><span class="chip warn">Pendiente</span></div>'; return;} const top=m.topPersona?`${m.topPersona.nombre} · ${m.topPersona.porcentaje.toFixed(1)}%`:'Sin dato'; const low=m.lowPersona?`${m.lowPersona.nombre} · ${m.lowPersona.porcentaje.toFixed(1)}%`:'Sin dato'; const mejorPregunta=`${m.mejorPregunta.pregunta} · ${m.mejorPregunta.porcentaje.toFixed(1)}%`; box.innerHTML=`<div class="metric-item"><div><strong>Mejor resultado</strong><br><span>${limpiarHtml(top)}</span></div><span class="chip good">Top</span></div><div class="metric-item"><div><strong>Resultado más bajo</strong><br><span>${limpiarHtml(low)}</span></div><span class="chip ${chipByScore(m.lowPersona?m.lowPersona.porcentaje:0)}">Seguimiento</span></div><div class="metric-item"><div><strong>Mayor fortaleza</strong><br><span>${limpiarHtml(mejorPregunta)}</span></div><span class="chip good">Fortaleza</span></div>`;}
+function renderPreguntaSemaforo(m){const box=document.getElementById('preguntaSemaforo'); if(!m.total){box.innerHTML='<div class="metric-item"><div><strong>Sin datos</strong><br><span>Se generará al cargar información.</span></div><span class="chip warn">Pendiente</span></div>'; return;} const sorted=m.preguntas.slice().sort((a,b)=>a.porcentaje-b.porcentaje).slice(0,5); box.innerHTML=sorted.map(x=>`<div class="metric-item"><div><strong>${x.pregunta}</strong><br><span>${x.porcentaje>=90?'Dominada':x.porcentaje>=80?'Atención preventiva':'Reforzamiento inmediato'}</span></div><span class="chip ${chipByScore(x.porcentaje)}">${x.porcentaje.toFixed(1)}%</span></div>`).join('');}
+function drawDistribucion(m){const data=google.visualization.arrayToDataTable([['Rango','Cantidad',{role:'style'}],['90-100',m.rangos['90-100'],'#137333'],['80-89',m.rangos['80-89'],'#d99100'],['70-79',m.rangos['70-79'],'#ef8f00'],['<70',m.rangos['<70'],'#b42318']]); new google.visualization.ColumnChart(document.getElementById('chartDistribucion')).draw(data,{legend:{position:'none'},chartArea:{left:60,top:24,width:'84%',height:'72%'},hAxis:{title:'Rango de resultado'},vAxis:{title:'Cantidad',minValue:0},backgroundColor:'transparent'});}
+function drawCargo(m){const fixed=[['Cargo','Promedio',{role:'style'}]]; m.cargoPromedios.forEach(x=>fixed.push([x.cargo,Number(x.promedio.toFixed(1)),'#1d75d1'])); const data=google.visualization.arrayToDataTable(fixed.length>1?fixed:[['Cargo','Promedio',{role:'style'}],['Sin datos',0,'#cbd5e1']]); new google.visualization.BarChart(document.getElementById('chartCargo')).draw(data,{legend:{position:'none'},chartArea:{left:220,top:24,width:'60%',height:'72%'},hAxis:{title:'Promedio (%)',viewWindow:{min:0,max:100}},backgroundColor:'transparent'});}
+function drawPreguntas(m){const rows=[['Pregunta','% Acierto',{role:'style'}]]; m.preguntas.forEach(x=>{const color=x.porcentaje>=90?'#137333':(x.porcentaje>=80?'#d99100':'#b42318'); rows.push([x.pregunta,Number(x.porcentaje.toFixed(1)),color]);}); const data=google.visualization.arrayToDataTable(rows); new google.visualization.ColumnChart(document.getElementById('chartPreguntas')).draw(data,{legend:{position:'none'},chartArea:{left:60,top:24,width:'88%',height:'72%'},hAxis:{title:'Pregunta'},vAxis:{title:'% Acierto',viewWindow:{min:0,max:100}},backgroundColor:'transparent'});}
+function renderTabla(lista){const tbody=document.querySelector('#tablaDetalle tbody'); tbody.innerHTML=''; if(!lista.length){tbody.innerHTML='<tr><td colspan="8">No hay datos para los filtros seleccionados.</td></tr>'; return;} lista.slice().sort((a,b)=>(b.fechaObj?.getTime()||0)-(a.fechaObj?.getTime()||0)).forEach(r=>{const tr=document.createElement('tr'); tr.innerHTML=`<td>${limpiarHtml(formatFecha(r.fechaObj))}</td><td>${limpiarHtml(r.nombre)}</td><td>${limpiarHtml(r.rut)}</td><td>${limpiarHtml(r.cargo)}</td><td>${limpiarHtml(r.contrato)}</td><td>${limpiarHtml(r.puntaje)}</td><td>${r.porcentaje.toFixed(1)}%</td><td>${chipEstado(r.porcentaje)}</td>`; tbody.appendChild(tr);});}
+function render(){const m=calcularMetricas(registrosFiltrados); renderKPIs(m); renderHero(m); renderSummary(m); renderHallazgos(m); renderRanking(m); renderPreguntaSemaforo(m); renderTabla(registrosFiltrados); if(chartsReady){drawDistribucion(m); drawCargo(m); drawPreguntas(m);} setStatus(`Datos cargados correctamente. Registros analizados: ${registrosFiltrados.length}.`);}
+function cargarTexto(text){try{registros=convertirCSV(text); prepararFiltros(); registrosFiltrados=registros.slice(); render()}catch(err){setStatus(err.message,true); setDebug('Error al interpretar el archivo/texto.');}}
+function procesarTextarea(){const t=document.getElementById('csvText').value; if(!t.trim()){setStatus('No hay texto pegado para procesar.', true); return;} cargarTexto(t);}
+function cargarEjemplo(){const ejemplo=`Marca temporal,Puntuación,Porcentaje,NOMBRE Y APELLIDOS,RUT,CARGO,CONTRATO,1. P1,2. P2,3. P3,4. P4,5. P5,6. P6,7. P7,8. P8,9. P9,10. P10,11. P11,12. P12,13. P13,14. P14,15. P15
+24/2/2026 15:39:57,15 / 15,100%,BERNARDO OJEDA MOLINA,14038363-5,JEFE INNOVACIÓN Y FORMACIÓN,XTREME MINING CHUQUICAMATA,B) ...,B) ...,C) ...,B) ...,C) ...,B) ...,C) ...,B) ...,B) ...,C) ...,C) ...,C) ...,B) ...,B) ...,C) ...
+25/2/2026 11:43:04,14 / 15,93%,PAMELA CHACON,13427134-5,ENCARGADA HERRAMIENTAS DE GESTIÓN,XTREME MINING CHUQUICAMATA,B) ...,B) ...,C) ...,B) ...,C) ...,B) ...,C) ...,B) ...,B) ...,C) ...,C) ...,B) ...,B) ...,B) ...,C) ...`; document.getElementById('csvText').value=ejemplo; cargarTexto(ejemplo);}
+document.getElementById('csvFile').addEventListener('change', async e=>{const file=e.target.files[0]; if(!file){setDebug('No se seleccionó archivo.'); return;} setDebug(`Archivo seleccionado: ${file.name} (${file.size} bytes).`); try{const text=await file.text(); document.getElementById('csvText').value=text.slice(0,5000); cargarTexto(text)}catch(err){setStatus('No se pudo leer el archivo: '+err.message,true); setDebug('Falló la lectura del archivo.');}});
+['fContrato','fCargo','fResultado','fMes'].forEach(id=>document.getElementById(id).addEventListener('change',aplicarFiltros));
+google.charts.setOnLoadCallback(()=>{chartsReady=true; setDebug('Google Charts cargado correctamente.');});
+</script>
+</body>
+</html>
